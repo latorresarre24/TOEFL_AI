@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Grades
+{% endblock %}
+
+{% block main %}
+
+<!-- Readiness dashboard with an average of grades for all tests taken -->
+
+<table class="table table-striped" method="get">
+  <thead>
+    <tr>
+        <th class="text-center">Test</th>
+        <th class="text-center">Points</th>
+        <th class="text-center">Take exam</th>
+    </tr>
+  </thead>
+  <tbody class="text-center">
+    <tr>
+      <td class="border-0" name="test1">Test 1</td>
+      <td class="border-0" name="points">{{ points1 }}</td>
+      <td class="border-0" name="price" href="/tests">Link</td>
+    </tr>
+    <tr>
+      <td class="border-0"name="test2">Test 2</td>
+      <td class="border-0" name="points">{{ points2 }}</td>
+      <td class="border-0" name="price" href="/grades">Link</td>
+    </tr>
+    <tr>
+      <td class="border-0" name="test3">Test 3</td>
+      <td class="border-0" name="points">{{ points3 | default('N/A') }}</td>
+      <td class="border-0" name="price" href="/grades">Link</td>
+    </tr>
+    <tr>
+      <td class="border-0" name="test4">Test 4</td>
+      <td class="border-0" name="points">{{ points4 }}</td>
+      <td class="border-0" name="price">Link</td>
+  </tbody>
+</table>
+
+{% endblock %}

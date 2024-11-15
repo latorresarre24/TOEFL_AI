@@ -1,0 +1,76 @@
+{% block main %}
+
+<!-- Reading Section -->
+
+<h1 class="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
+    Please answer the questions
+</h1>
+
+<section class="pt-24 pb-12 sm:pt-32 sm:pb-16 px-4 bg-blue-50" method="post">
+    <button onclick="location.href='/reading'" class="inline-block px-6 py-3 text-black bg-blue-500 hover:bg-blue-600 rounded-md shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
+        Back to reading
+    </button>
+    <div class="max-w-7xl mx-auto text-center">
+      <div>
+        <div>
+          {% for i in range(1, 14) %}
+            <br>
+            <div class="mt-8">
+              <p>{{ questions[i] | safe }}</p>
+              {% set start_index = (i - 1) * 4 + 1 %}
+              <div class="mt-4">
+                <input type="radio" id="answer{{ i }}_{{ start_index }}" name="{{ start_index }}" value="a" required>
+                <label for="answer{{ i }}_{{ start_index }}">{{ answers[start_index] | safe }}</label><br>
+                <input type="radio" id="answer{{ i }}_{{ start_index + 1 }}" name="{{ start_index }}" value="b" required>
+                <label for="answer{{ i }}_{{ start_index + 1 }}">{{ answers[start_index + 1] | safe }}</label><br>
+                <input type="radio" id="answer{{ i }}_{{ start_index + 2 }}" name="{{ start_index }}" value="c" required>
+                <label for="answer{{ i }}_{{ start_index + 2 }}">{{ answers[start_index + 2] | safe }}</label><br>
+                <input type="radio" id="answer{{ i }}_{{ start_index + 3 }}" name="{{ start_index }}" value="d" required>
+                <label for="answer{{ i }}_{{ start_index + 3 }}">{{ answers[start_index + 3] | safe }}</label><br>
+              </div>
+            </div>
+            </p>
+          {% endfor %}
+          <br>
+          <p>{{ questions[14] | safe }}</p>
+              <div class="mt-4">
+                <input type="radio" id="answer{{ 53 }}" name="answer{{ 53 }}" value="a">
+                <label for="answer{{ 53 }}">{{ answers[53] | safe }}</label><br>
+                <input type="radio" id="answer{{ 54 }}" name="answer{{ 54 }}" value="b">
+                <label for="answer{{ 54 }}">{{ answers[54] | safe }}</label><br>
+                <input type="radio" id="answer{{ 55 }}" name="answer{{ 55 }}" value="c">
+                <label for="answer{{ 55 }}">{{ answers[55] | safe }}</label><br>
+                <input type="radio" id="answer{{ 56 }}" name="answer{{ 56 }}" value="d">
+                <label for="answer{{ 56 }}">{{ answers[56] | safe }}</label><br>
+                <input type="radio" id="answer{{ 57 }}" name="answer{{ 57 }}" value="d">
+                <label for="answer{{ 57 }}">{{ answers[57] | safe }}</label><br>
+                <input type="radio" id="answer{{ 58 }}" name="answer{{ 58 }}" value="d">
+                <label for="answer{{ 58 }}">{{ answers[58] | safe }}</label><br>
+              </div>
+            </p>
+        </div>
+      </div>
+    </div>
+  <div class="mt-8">
+    <button onclick="location.href='/reading'" class="inline-block px-6 py-3 text-black bg-blue-500 hover:bg-blue-600 rounded-md shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
+        Back to reading
+    </button>
+    <button type="submit" class="inline-block px-6 py-3 text-black bg-blue-500 hover:bg-blue-600 rounded-md shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
+      Save
+    </button>
+    <!-- 
+    This script defines a function `confirmSave` that prompts the user with a confirmation dialog.
+    If the user confirms, they are redirected to the '/reading-qs' page.
+    
+    <script>
+      function confirmSave() {
+      if (confirm('Are you sure you want to save?')) {
+        location.href = '/reading-qs';
+      }
+      }
+    </script>
+    -->
+  </div>
+  </div>
+</section>
+{% endblock %}

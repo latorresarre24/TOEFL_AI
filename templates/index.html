@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Portfolio
+{% endblock %}
+
+{% block main %}
+
+<div class="min-h-screen bg-gray-100">
+    <!-- Navigation -->
+
+    
+
+    <!-- Features Section -->
+    <section class="py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="p-6 bg-gray-50 rounded-lg shadow-md">
+                    <BookOpen class="h-12 w-12 text-blue-600 mb-4" />
+                    <h2 class="text-xl font-bold text-gray-900 mb-2">Practice Tests</h2>
+                    <p class="text-gray-600">Access a variety of practice tests to prepare for the TOEFL exam.</p>
+                </div>
+                <div class="p-6 bg-gray-50 rounded-lg shadow-md">
+                    <Headphones class="h-12 w-12 text-blue-600 mb-4" />
+                    <h2 class="text-xl font-bold text-gray-900 mb-2">Listening Exercises</h2>
+                    <p class="text-gray-600">Improve your listening skills with our comprehensive exercises.</p>
+                </div>
+                <div class="p-6 bg-gray-50 rounded-lg shadow-md">
+                    <MessageSquare class="h-12 w-12 text-blue-600 mb-4" />
+                    <h2 class="text-xl font-bold text-gray-900 mb-2">Speaking Practice</h2>
+                    <p class="text-gray-600">Enhance your speaking abilities with interactive practice sessions.</p>
+                </div>
+                <div class="p-6 bg-gray-50 rounded-lg shadow-md">
+                    <PenTool class="h-12 w-12 text-blue-600 mb-4" />
+                    <h2 class="text-xl font-bold text-gray-900 mb-2">Writing Tasks</h2>
+                    <p class="text-gray-600">Develop your writing skills with our guided tasks and feedback.</p>
+                </div>
+                <div class="p-6 bg-gray-50 rounded-lg shadow-md">
+                    <GraduationCap class="h-12 w-12 text-blue-600 mb-4" />
+                    <h2 class="text-xl font-bold text-gray-900 mb-2">Study Materials</h2>
+                    <p class="text-gray-600">Access a wide range of study materials to aid your preparation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+{% endblock %}
