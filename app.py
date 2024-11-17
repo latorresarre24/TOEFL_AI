@@ -148,10 +148,10 @@ def register():
 @login_required
 def grades():
     """Show index"""
-    points1 = db.execute("SELECT avg(points) as avg_points FROM grades where user_id = ? and exam_id = 1;", session["user_id"])[0]["avg_points"]
-    points2 = db.execute("SELECT avg(points) as avg_points FROM grades where user_id = ? and exam_id = 2;", session["user_id"])[0]["avg_points"]
-    points3 = db.execute("SELECT avg(points) as avg_points FROM grades where user_id = ? and exam_id = 3;", session["user_id"])[0]["avg_points"]
-    points4 = db.execute("SELECT avg(points) as avg_points FROM grades where user_id = ? and exam_id = 4;", session["user_id"])[0]["avg_points"]
+    points1 = db.execute("SELECT sum(points) as avg_points FROM grades where user_id = ? and exam_id = 1;", session["user_id"])[0]["avg_points"]
+    points2 = db.execute("SELECT sum(points) as avg_points FROM grades where user_id = ? and exam_id = 2;", session["user_id"])[0]["avg_points"]
+    points3 = db.execute("SELECT sum(points) as avg_points FROM grades where user_id = ? and exam_id = 3;", session["user_id"])[0]["avg_points"]
+    points4 = db.execute("SELECT sum(points) as avg_points FROM grades where user_id = ? and exam_id = 4;", session["user_id"])[0]["avg_points"]
     return render_template("grades.html", points1=points1, points2=points2, points3=points3, points4=points4)
 
 @app.route("/reading")
@@ -170,33 +170,24 @@ def reading_qs():
         # Ensure all questions have been answered
         # if not request.form.get("1") or not request.form.get("2") or not request.form.get("3") or not request.form.get("4") or not request.form.get("5") or not request.form.get("6") or not request.form.get("7") or not request.form.get("8") or not request.form.get("9") or not request.form.get("10"):
         #    return apology("Please answer all questions", 403)
-        
-        # Calculate points
-        points = 0
+    
         for i in range(1, 14):
-            # if request.form.get(str(i)) == db.execute("SELECT answer FROM reading_ans WHERE id = ?", i)[0]["answer"]:
-            #    points += 1
-
-            # initialize loop for answers and add 4 each time
-            start_index = (i - 1) * 4 + 1
-            answer_a = request.form.get("start_index")
-            answer_b = request.form.get("start_index +1")
-            answer_c = request.form.get("start_index +2")
-            answer_d = request.form.get("start_index +3")
-
-            # Get points for each question
-            points_a = db.execute("SELECT (points * (SELECT correct FROM reading_ans WHERE id = ?, i)) AS points FROM reading_qs WHERE id = ?;", start_index)[0]["points"]
-            points_b = db.execute("SELECT (points * (SELECT correct FROM reading_ans WHERE id = ?, i)) AS points FROM reading_qs WHERE id = ?;", start_index + 1)[0]["points"]
-            points_c = db.execute("SELECT (points * (SELECT correct FROM reading_ans WHERE id = ?, i)) AS points FROM reading_qs WHERE id = ?;", start_index + 2)[0]["points"]
-            db_a = db.execute("SELECT points as points FROM grades WHERE exam_id = 1 AND subject_id = 1 and user_id = ? and answer_id =?;", session["user_id"], start_index)[0]["points"]    
-            if not db_a:
-                record_a = db.execute("INSERT INTO grades (exam_id, subject_id, user_id, points) VALUES (1, 1, ?, ?);", session["user_id"], start_index)
+            # ensure all questions have been answered
+            #if not request.form.get(str(i)):
+            #    return apology("Please answer all questions", 403)
+            # Check if the question has already been answered
+            q_a = db.execute("select points from grades where user_id = ? and exam_id = 1 and answer_id = ? and subject_id = 1;", session["user_id"], i)
+            # Get points for question i
+            q_points = db.execute("SELECT (points * (SELECT correct FROM reading_ans WHERE id = ?)) AS points FROM reading_qs WHERE reading_id=1 AND id = ?;", i, i)[0]["points"]
+            
+            # if the question has already been answered, update the answer
+            if q_a:
+                db.execute("update grades set points = ? where exam_id = 1 and subject_id =1 and user_id = ? and answer_id = ?;", q_points, session["user_id"], i)
+            
+            # if the question has not been answered, insert the answer
             else:
-                record_a = db.execute("UPDATE grades SET points = ? WHERE exam_id = 1 AND subject_id = 1 and user_id = ? and answer_id =?;", session["user_id"], start_index)
-        
-        # Insert grade into database
-        db.execute("INSERT INTO grades (user_id, exam_id, points) VALUES (?, 1, ?);", session["user_id"], points)
-        
+                db.execute("insert into grades (exam_id, subject_id, user_id, points, answer_id) values (1,1,?,?,?);", session["user_id"], q_points, i)
+
         return redirect("/grades")
 
     # Fetch all questions in a single query
@@ -210,3 +201,57 @@ def reading_qs():
     answers_dict = {answer["id"]: answer["answer"] for answer in answers}
         
     return render_template("reading-qs.html", questions=questions_dict, answers=answers_dict)
+
+
+# ---------------------------- OLD CODE --------------------------------
+
+# @app.route("/reading-qs", methods=["GET", "POST"])
+# @login_required
+# def reading_qs():
+#    """Show reading questions"""
+#    if request.method == "POST":
+#        # Ensure all questions have been answered
+#        # if not request.form.get("1") or not request.form.get("2") or not request.form.get("3") or not request.form.get("4") or not request.form.get("5") or not request.form.get("6") or not request.form.get("7") or not request.form.get("8") or not request.form.get("9") or not request.form.get("10"):
+#        #    return apology("Please answer all questions", 403)
+#        
+        # Calculate points
+#        points = 0
+#        for i in range(1, 14):
+            # if request.form.get(str(i)) == db.execute("SELECT answer FROM reading_ans WHERE id = ?", i)[0]["answer"]:
+            #    points += 1
+
+            # initialize loop for answers and add 4 each time
+#            start_index = (i - 1) * 4 + 1
+#            answer_a = request.form.get("start_index")
+#            answer_b = request.form.get("start_index +1")
+#           answer_c = request.form.get("start_index +2")
+#            answer_d = request.form.get("start_index +3")
+
+            # Get points for each question
+#            points_a = db.execute("SELECT (points * (SELECT correct FROM reading_ans WHERE id = ?, i)) AS points FROM reading_qs WHERE id = ?;", start_index)[0]["points"]
+#            points_b = db.execute("SELECT (points * (SELECT correct FROM reading_ans WHERE id = ?, i)) AS points FROM reading_qs WHERE id = ?;", start_index + 1)[0]["points"]
+#            points_c = db.execute("SELECT (points * (SELECT correct FROM reading_ans WHERE id = ?, i)) AS points FROM reading_qs WHERE id = ?;", start_index + 2)[0]["points"]
+#            db_a = db.execute("SELECT points as points FROM grades WHERE exam_id = 1 AND subject_id = 1 and user_id = ? and answer_id =?;", session["user_id"], start_index)[0]["points"]    
+#            if not db_a:
+#                record_a = db.execute("INSERT INTO grades (exam_id, subject_id, user_id, points) VALUES (1, 1, ?, ?);", session["user_id"], start_index)
+#            else:
+#                record_a = db.execute("UPDATE grades SET points = ? WHERE exam_id = 1 AND subject_id = 1 and user_id = ? and answer_id =?;", session["user_id"], start_index)
+        
+        # Insert grade into database
+#        db.execute("INSERT INTO grades (user_id, exam_id, points) VALUES (?, 1, ?);", session["user_id"], points)
+        
+#        return redirect("/grades")
+
+    # Fetch all questions in a single query
+#    questions = db.execute("SELECT id, question FROM reading_qs;")
+    # Store answers in a dictionary
+#    questions_dict = {question["id"]: question["question"] for question in questions}
+
+    # Fetch all answers in a single query
+#    answers = db.execute("SELECT id, answer FROM reading_ans;")
+    # Store answers in a dictionary
+#    answers_dict = {answer["id"]: answer["answer"] for answer in answers}
+        
+#    return render_template("reading-qs.html", questions=questions_dict, answers=answers_dict)
+
+# ---------------------------- OLD CODE --------------------------------
