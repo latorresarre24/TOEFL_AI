@@ -13,21 +13,17 @@
     <div class="max-w-7xl mx-auto text-center">
       <div>
         <div>
-          {% for i in range(1, 14) %}
+          {% for i in range(1, 3) %}
             <br>
             <div class="mt-8">
               <p>{{ questions[i] | safe }}</p>
-              {% set start_index = (i - 1) * 4 + 1 %}
-              <div class="mt-4">
-                <input type="radio" id="answer{{ i }}_{{ start_index }}" name="{{ start_index }}" value="a" required>
-                <label for="answer{{ i }}_{{ start_index }}">{{ answers[start_index] | safe }}</label><br>
-                <input type="radio" id="answer{{ i }}_{{ start_index + 1 }}" name="{{ start_index }}" value="b" required>
-                <label for="answer{{ i }}_{{ start_index + 1 }}">{{ answers[start_index + 1] | safe }}</label><br>
-                <input type="radio" id="answer{{ i }}_{{ start_index + 2 }}" name="{{ start_index }}" value="c" required>
-                <label for="answer{{ i }}_{{ start_index + 2 }}">{{ answers[start_index + 2] | safe }}</label><br>
-                <input type="radio" id="answer{{ i }}_{{ start_index + 3 }}" name="{{ start_index }}" value="d" required>
-                <label for="answer{{ i }}_{{ start_index + 3 }}">{{ answers[start_index + 3] | safe }}</label><br>
-              </div>
+              {% for j in range(1, 5) %}
+                {% set start_index = ((i - 1) * 4) + j %}
+                <div class="mt-4">
+                  <input type="radio" id="answer{{ i }}_{{ start_index }}" name="usr_ans" value="{{ start_index }}">
+                  <label for="answer{{ i }}_{{ start_index }}">{{ answers[start_index] | safe }}</label><br>
+                </div>
+              {% endfor %}
             </div>
             </p>
           {% endfor %}

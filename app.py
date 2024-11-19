@@ -171,22 +171,26 @@ def reading_qs():
         # if not request.form.get("1") or not request.form.get("2") or not request.form.get("3") or not request.form.get("4") or not request.form.get("5") or not request.form.get("6") or not request.form.get("7") or not request.form.get("8") or not request.form.get("9") or not request.form.get("10"):
         #    return apology("Please answer all questions", 403)
     
-        for i in range(1, 14):
-            # ensure all questions have been answered
-            #if not request.form.get(str(i)):
-            #    return apology("Please answer all questions", 403)
-            # Check if the question has already been answered
-            q_a = db.execute("select points from grades where user_id = ? and exam_id = 1 and answer_id = ? and subject_id = 1;", session["user_id"], i)
-            # Get points for question i
-            q_points = db.execute("SELECT (points * (SELECT correct FROM reading_ans WHERE id = ?)) AS points FROM reading_qs WHERE reading_id=1 AND id = ?;", i, i)[0]["points"]
+        for i in range(1, 2):
+            # get answer for quetion i
+            for user_answer_id in range(1, 5):
+                user_answer_id = request.form.get("usr_ans")
+                
+                # Ensure all questions have been answered
+                if not user_answer_id:
+                    return apology("Please answer all questions", 403)
+
+                # Get points for question i
+                q_points = db.execute("SELECT (points * (SELECT correct FROM reading_ans WHERE id = ?)) AS points FROM reading_qs WHERE reading_id=1 AND id = ?;", user_answer_id, i)[0]["points"]
+                # Check if the question has already been answered
+                q_a = db.execute("select points from grades where user_id = ? and exam_id = 1 and answer_id = ? and subject_id = 1;", session["user_id"], i)
+                # if the question has already been answered, update the answer
+                if q_a:
+                   db.execute("update grades set points = ? where exam_id = 1 and subject_id =1 and user_id = ? and answer_id = ?;", q_points, session["user_id"], user_answer_id)
             
-            # if the question has already been answered, update the answer
-            if q_a:
-                db.execute("update grades set points = ? where exam_id = 1 and subject_id =1 and user_id = ? and answer_id = ?;", q_points, session["user_id"], i)
-            
-            # if the question has not been answered, insert the answer
-            else:
-                db.execute("insert into grades (exam_id, subject_id, user_id, points, answer_id) values (1,1,?,?,?);", session["user_id"], q_points, i)
+                # if the question has not been answered, insert the answer
+                else:
+                   db.execute("insert into grades (exam_id, subject_id, user_id, points, answer_id) values (1,1,?,?,?);", session["user_id"], q_points, user_answer_id)
 
         return redirect("/grades")
 
