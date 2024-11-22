@@ -20,7 +20,7 @@
               {% for j in range(1, 5) %}
                 {% set start_index = ((i - 1) * 4) + j %}
                 <div class="mt-4">
-                  <input type="radio" id="answer{{ i }}_{{ start_index }}" name="usr_ans" value="{{ start_index }}">
+                  <input type="radio" id="answer{{ i }}_{{ start_index }}" name="{{ i }}" value="{{ start_index }}">
                   <label for="answer{{ i }}_{{ start_index }}">{{ answers[start_index] | safe }}</label><br>
                 </div>
               {% endfor %}
