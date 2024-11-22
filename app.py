@@ -172,7 +172,7 @@ def reading_qs():
         # Initialize a dictionary to store user answers
         user_answers = {}
 
-        for i in range(1, 3):
+        for i in range(1, 14):
             # Construct the form field name
             #field_name = f"usr_ans{i}"
             
@@ -180,8 +180,8 @@ def reading_qs():
             user_answer_id = request.form.get(f"{i}")
 
             # Ensure all questions have been answered
-            # if not user_answer_id:
-              #  return apology("Please answer all questions", 403)
+            #if not user_answer_id:
+            #    return apology("Please answer all questions", 403)
 
             # Store the answer in the dictionary
             # but currently it is not used
@@ -200,6 +200,54 @@ def reading_qs():
             # if the question has not been answered, insert the answer
             else:
                 db.execute("insert into new_grades (exam_id, subject_id, user_id, points, answer_id, reading_qs_id) values (?,?,?,?,?,?);", 1, 1, usr_id, q_points, user_answer_id,i)
+
+        ans_53 = request.form.get("53") # 53 or None
+        ans_54 = request.form.get("54")
+        ans_55 = request.form.get("55")
+        ans_56 = request.form.get("56")
+        ans_57 = request.form.get("57")
+        ans_58 = request.form.get("58")
+
+        # /// TO DO ///
+        # ans_14 = int(ans_53 + ans_54 + ans_55 + ans_56 + ans_57 + ans_58) # TODO fix answer_id to ans_14 (not working because it doesn´t accept "None") for example for not selected answers
+
+        # mult = (ans_53 is not None) * (ans_54 is not None) * (ans_55 is not None) * (ans_56 is not None) * (ans_57 is not None) * (ans_58 is not None)
+        # Check if specific answers are provided to calculate total points for question 14
+        if ans_53 is not None and ans_54 is not None and ans_58 is not None and ans_55 is None and ans_56 is None and ans_57 is None:
+            total_q_points_14 = 2
+        else:
+            total_q_points_14 = 0
+        
+        q_a_result_14 = db.execute("select id as id from new_grades where user_id = ? and exam_id = 1 and subject_id = 1 and reading_qs_id = 14;", session["user_id"])
+        q_a_14 = q_a_result_14[0]["id"] if q_a_result_14 else None
+
+        if q_a_14 is not None:
+            db.execute("update new_grades set points = ?, answer_id = ? where id = ?;", total_q_points_14, 1, q_a_14) # TODO fix answer_id to ans_14 (not working because it doesn´t accept "None")
+        else:
+            db.execute("insert into new_grades (exam_id, subject_id, user_id, points, answer_id, reading_qs_id) values (?,?,?,?,?,?);", 1, 1, usr_id, total_q_points_14, 1,14) # TODO fix answer_id to ans_14 (not working because it doesn´t accept "None")
+
+        
+
+        #user_answers_14 = {}
+        
+        #user_answers_id_14 = request.form.getlist("qs14")
+
+        #q_points_14 = 0
+        #for i in range (1, len(user_answers_id_14)+1):
+        #    q_points_14 *= db.execute("SELECT (points * (SELECT correct FROM reading_ans WHERE id = ?)) AS points FROM reading_qs WHERE reading_id=1 AND id = 14;", user_answers_id_14[i])[0]["points"]
+        #    # Add all user answers
+            # Multiply all user answers
+        
+        ## Check if the entry with id = 14 exists
+        #entry_14 = db.execute("SELECT id FROM new_grades WHERE id = 14;")
+        
+        # If the entry exists, update it
+        #if entry_14:
+        #    db.execute("update new_grades set points = ? where id = 14;", q_points_14)
+        # If the entry does not exist, insert a new entry
+        #else:
+        #    db.execute("insert into new_grades (exam_id, subject_id, user_id, points, answer_id, reading_qs_id) values (?,?,?,?,?,?);", 1, 1, usr_id, q_points_14, 1, 14)
+            
 
         return redirect("/grades")
 
