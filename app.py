@@ -147,7 +147,7 @@ def register():
 @app.route("/grades")
 @login_required
 def grades():
-    """Show index"""
+    """Show grades"""
     points1 = db.execute("SELECT sum(points) as avg_points FROM new_grades where user_id = ? and exam_id = 1;", session["user_id"])[0]["avg_points"]
     points2 = db.execute("SELECT sum(points) as avg_points FROM new_grades where user_id = ? and exam_id = 2;", session["user_id"])[0]["avg_points"]
     points3 = db.execute("SELECT sum(points) as avg_points FROM new_grades where user_id = ? and exam_id = 3;", session["user_id"])[0]["avg_points"]
@@ -226,29 +226,6 @@ def reading_qs():
         else:
             db.execute("insert into new_grades (exam_id, subject_id, user_id, points, answer_id, reading_qs_id) values (?,?,?,?,?,?);", 1, 1, usr_id, total_q_points_14, 1,14) # TODO fix answer_id to ans_14 (not working because it doesn´t accept "None")
 
-        
-
-        #user_answers_14 = {}
-        
-        #user_answers_id_14 = request.form.getlist("qs14")
-
-        #q_points_14 = 0
-        #for i in range (1, len(user_answers_id_14)+1):
-        #    q_points_14 *= db.execute("SELECT (points * (SELECT correct FROM reading_ans WHERE id = ?)) AS points FROM reading_qs WHERE reading_id=1 AND id = 14;", user_answers_id_14[i])[0]["points"]
-        #    # Add all user answers
-            # Multiply all user answers
-        
-        ## Check if the entry with id = 14 exists
-        #entry_14 = db.execute("SELECT id FROM new_grades WHERE id = 14;")
-        
-        # If the entry exists, update it
-        #if entry_14:
-        #    db.execute("update new_grades set points = ? where id = 14;", q_points_14)
-        # If the entry does not exist, insert a new entry
-        #else:
-        #    db.execute("insert into new_grades (exam_id, subject_id, user_id, points, answer_id, reading_qs_id) values (?,?,?,?,?,?);", 1, 1, usr_id, q_points_14, 1, 14)
-            
-
         return redirect("/grades")
 
     # Fetch all questions in a single query
@@ -262,3 +239,21 @@ def reading_qs():
     answers_dict = {answer["id"]: answer["answer"] for answer in answers}
         
     return render_template("reading-qs.html", questions=questions_dict, answers=answers_dict)
+
+@app.route("/writing", methods=["GET", "POST"])
+@login_required
+def writing():
+    """Show writing"""
+    if request.method == "POST":
+        # Handle POST request here
+        writing_ans_1 = request.form.get("writing_ans")
+        if writing_ans_1 is None or writing_ans_1 == "":
+            return apology("Please answer the question", 403)
+        else:
+            result = db.execute("insert into writing_ans (user_id, answer) values (?,?);", session["user_id"], writing_ans_1)
+            if not result:
+                return apology("Failed to submit your answer. Please try again.", 500)
+        return redirect("/grades")
+    
+    return render_template("writing.html")
+    

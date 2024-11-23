@@ -1,0 +1,125 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Writing
+{% endblock %}
+
+{% block main %}
+
+<!-- Reading Section -->
+<form action="/writing" class="pt-24 pb-12 sm:pt-32 sm:pb-16 px-4 bg-blue-50" method="post">
+  <div class="max-w-7xl mx-auto text-center">
+      <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
+          Writing section
+      </h1>
+      <div>
+        <h2>Practice 1 -- Passage, Lecture, and Question</h2>
+        <p>Directions: Give yourself 3 minutes to read the passage. </p>
+        <p>In an effort to encourage ecologically sustainable forestry practices, an international
+          organization started issuing certifications to wood companies that meet high ecological
+          standards by conserving resources and recycling materials. Companies that receive this
+          certification can attract customers by advertising their products as “ecocertified.” Around the
+          world, many wood companies have adopted new, ecologically friendly practices in order to
+          receive ecocertification. However, it is unlikely that wood companies in the United States
+          will do the same, for several reasons.</p>
+        <p>First, American consumers are exposed to so much advertising that they would not value or
+          even pay attention to the ecocertification label. Because so many mediocre products are labeled
+          “new” or “improved,” American consumers do not place much trust in advertising claims in
+          general.</p>
+        <p>Second, ecocertified wood will be more expensive than uncertified wood because in order to
+          earn ecocertification, a wood company must pay to have its business examined by a
+          certification agency. This additional cost gets passed on to consumers. American consumers
+          tend to be strongly motivated by price, and therefore they are likely to choose cheaper
+          uncertified wood products. Accordingly, American wood companies will prefer to keep their
+          prices low rather than obtain ecocertification.</p>
+        <p>Third, although some people claim that it always makes good business sense for American
+          companies to keep up with the developments in the rest of the world, this argument is not
+          convincing. Pursuing certification would make sense for American wood companies only if
+          they marketed most of their products abroad. But that is not the case—American wood
+          businesses sell most of their products in the United States, catering to a very large customer
+          base that is satisfied with the merchandise.</p>
+          </br>
+        <p>Now listen to part of a lecture on the topic you just read about.</p>
+        <p>Professor: Well, despite what many people say, there’s good reason to think that many
+          American wood companies will eventually seek ecocertification for their
+          wood products. First off, consumers in the United States don’t treat all
+          advertising the same. They distinguish between advertising claims that
+          companies make about their own products and claims made by independent
+          certification agencies. Americans have a lot of confidence in independent
+          consumer agencies. Thus, ecologically minded Americans are likely to react
+          very favorably to wood products ecologically certified by an independent
+          organization with an international reputation for trustworthiness. </p>
+        <p>Second point—of course it’s true that American consumers care a lot about
+          price—who doesn’t? But studies of how consumers make decisions show that
+          price alone determines consumers’ decisions only when the price of one
+          competing product is much higher or lower than another. When the price
+          difference between two products is small—say, less than five percent, as is the
+          case with certified wood— Americans often do choose on factors other than
+          price. And Americans are becoming increasingly convinced of the value of
+          preserving and protecting the environment.</p>
+        <p>And third, U.S. wood companies should definitely pay attention to what’s
+          going on in the wood business internationally, not because of foreign
+          consumers, but because of foreign competition. As I just told you, there’s a
+          good chance that many American consumers will be interested in ecocertified
+          products. And guess what, if American companies are slow capturing those
+          customers, you can be sure that foreign companies will soon start crowding
+          into the American market, offering ecocertified wood that domestic companies
+          don’t.</p>
+
+        <p>Directions: Give yourself 20 minutes to plan and write your response. Your response is
+          judged on the quality of the writing and on how well it presents the points in the lecture and
+          their relationship to the reading passage. Typically, an effective response will be 150 to 225
+          words. You may view the reading passage while you respond.</p>
+        <p>Response time: 20 minutes</p>
+        <p>Question: Summarize the points made in the lecture, being sure to explain how they cast
+          doubt on specific points made in the reading passage.</p>
+        </br>
+        </br>
+        </br>
+        <div>
+          <p id="timer" class="text-lg font-semibold text-red-600"></p>
+          <script>
+            function startTimer(duration, display) {
+              var timer = duration, minutes, seconds;
+              setInterval(function () {
+          minutes = parseInt(timer / 60, 10);
+          seconds = parseInt(timer % 60, 10);
+
+          minutes = minutes < 10 ? "0" + minutes : minutes;
+          seconds = seconds < 10 ? "0" + seconds : seconds;
+
+          display.textContent = minutes + ":" + seconds;
+
+          if (--timer < 0) {
+            timer = 0;
+          }
+              }, 1000);
+            }
+
+            window.onload = function () {
+              var twentyMinutes = 60 * 20,
+            display = document.querySelector('#timer');
+              startTimer(twentyMinutes, display);
+            };
+          </script>
+        </div>
+        <textarea type="text" id="name" name="writing_ans" required minlength="1" maxlength="5000" size="600" spellcheck="false" required
+        cols="70" rows="10" ></textarea>
+        <!-- Timer  -->
+        <script>
+          // Enable the textarea after 3 minutes
+          setTimeout(function() {
+            document.getElementById('name').disabled = true;
+          }, 1202000); // 1202000 milliseconds = 20 minutes and 2 seconds
+        </script>
+       
+
+  </div>
+  <div class="mt-8">
+    <button type="submit" class="inline-block px-6 py-3 text-black bg-blue-500 hover:bg-blue-600 rounded-md shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
+      Save
+    </button>
+  </div>
+</form>
+
+{% endblock %}

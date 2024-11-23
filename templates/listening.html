@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Listening
+{% endblock %}
+
+{% block main %}
+
+<!-- Reading Section -->
+<section class="pt-24 pb-12 sm:pt-32 sm:pb-16 px-4 bg-blue-50">
+  <div class="max-w-7xl mx-auto text-center">
+      <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
+          Listening section
+      </h1>
+      <div>
+        <h2>Practice 1:</h2>
+        <p>“State whether you agree or disagree with the following statement. 
+            Then explain your reasons using specific details in your argument. 
+            Teachers should assign daily homework to students.”</p>
+        <p>Time to prepare: 15 seconds</p>
+        <p>Time to speak: 15 seconds</p>
+  </div>
+  <div class="mt-8">
+    <button onclick="location.href='/reading-qs'" class="inline-block px-6 py-3 text-black bg-blue-500 hover:bg-blue-600 rounded-md shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
+      Next
+    </button>
+  </div>
+  </div>
+</section>
+
+{% endblock %}
